@@ -3,37 +3,38 @@
 #include <stdlib.h>
 #include <time.h>
 
-int licz(double *p1, double *p2, double x); // Zadanie 1
-double *maksymalny(double *t, int size);    // Zadanie 2
-int wiekszych(int *t, int size, int k);     // Zadanie 3
-double *create_double_array(int k);                // Zadanie 4
-void complete_double_array(double *t, int size);   // Zadanie 4
-void print_double_array(double *t, int size);      // Zadanie 4
+int licz(double *p1, double *p2, double x);      // Zadanie 1
+double *maksymalny(double *t, int size);         // Zadanie 2
+int wiekszych(int *t, int size, int k);          // Zadanie 3
+double *create_double_array(int k);              // Zadanie 4
+void complete_double_array(double *t, int size); // Zadanie 4
+void print_double_array(double *t, int size);    // Zadanie 4
+int *create_int_array(int k);                    // Zadanie 4
+void complete_int_array(int *t, int size);       // Zadanie 4
+void reverse(int *p1, int *p2);                  // Zadanie 5
 
-void reverse(int *p1, int *p2); // Zadanie 5
-void new_create_array(void *p, int k, int x);
-
-void new_complete_array(void *t, int size, int type); // Zadanie 4
-void new_print_array(void *t, int size, int type);    // Zadanie 4
+// void new_create_array(void *p, int k, int x);         // Testy
+// void new_complete_array(void *t, int size, int type); // Testy
+// void new_print_array(void *t, int size, int type);    // Testy
 
 void print_int_array(int *, int size);
 
 int main(void)
 {
     srand((unsigned)time(NULL));
-    //           |0   |1   |2   |3   |4   |5   |6   |7   |8
+//               |0   |1   |2   |3   |4   |5   |6   |7   |8
     double t[] = {8.0, 2.0, 1.0, 6.0, 2.0, 7.0, 5.0, 2.0, 90.0};
     int n = licz(t + 1, t + 7, 2.0);
-    // printf("%d\n", n);
+//     printf("%d\n", n);
     int r = sizeof(t) / sizeof(double);
-    // printf("%d", r);
-    // double* d=maksymalny(t, r);
-    // printf("%.1f\n", *d);
-    //         |0 |1 |2 |3 |4 |5 |6 |7 |8 |9
+//    printf("%d", r);
+//    double* d=maksymalny(t, r);
+//    printf("%.1f\n", *d);
+//             |0  |1 |2 |3 |4 |5 |6 |7 |8 |9
     int t1[] = {11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
     r = sizeof(t1) / sizeof(int);
-    // printf("%d", r);
-    // printf("%d", wiekszych(t1, r, 8));
+//    printf("%d", r);
+//    printf("%d", wiekszych(t1, r, 8));
 
     int n2 = 1, m2 = 1;
     do
@@ -61,19 +62,16 @@ int main(void)
         *(t4 + i) = *(t3 + j);
     }
     print_double_array(t2, n2), print_double_array(t3, m2), print_double_array(t4, n2 + m2);
-    //--------------------------------------------------------------------------
-    // int *t5;
-    // reverse();
-    void *t5;
-    new_create_array(t5, 5, 1);
-    new_complete_array(t5, 5, 1);
-//    new_print_array(t5, 5, 1);
 
-    print_int_array(t5, 5);
+//  ---------------------------------------------------------------------------------------
 
-    reverse((int *)t5, ((int *)t5) + 4);
+    int size = 5;
+    int *t5 = create_int_array(size);
+    complete_int_array(t5, size);
+    print_int_array(t5, size);
+    reverse(t5, t5+(size-1));
+    print_int_array(t5, size);
 
-    print_int_array(t5, 5);
     free(t2), free(t3), free(t4), free(t5);
     return 0;
 }
@@ -84,7 +82,8 @@ void print_int_array(int *t, int size)
         printf("%d\t", *(t + i));
         if (i > 0 && i % 10 == 0)
             putchar('\n');
-    }putchar('\n');
+    }
+    putchar('\n');
 }
 
 void print_double_array(double *t, int size)
@@ -95,6 +94,7 @@ void print_double_array(double *t, int size)
     }
     printf("\n\n");
 }
+
 void complete_double_array(double *t, int size)
 {
     for (int i = 0; i < size; i++)
@@ -102,6 +102,7 @@ void complete_double_array(double *t, int size)
         *(t + i) = (rand() % 110) / 10.0;
     }
 }
+
 double *create_double_array(int k)
 {
     double *p;
@@ -112,6 +113,7 @@ double *create_double_array(int k)
     }
     return p;
 }
+
 void reverse(int *p1, int *p2)
 {
     if (p1 > p2)
@@ -123,10 +125,9 @@ void reverse(int *p1, int *p2)
     int size = p2 - p1;
     for (int i = 0; i < (size / 2); i++)
     {
-        int temp = *p1;
-        *p1 = *p2;
-        *p2 = temp;
-        printf("x");
+        int temp = *(p1+i);
+        *(p1+i) = *(p2-i);
+        *(p2-i) = temp;
     }
 }
 
@@ -238,3 +239,23 @@ int licz(double *p1, double *p2, double x)
     }
     return num;
 }
+
+int *create_int_array(int k)
+{
+    int *p;
+    if ((p = (int *)malloc(k * sizeof(int))) == NULL)
+    {
+        printf("\nOperacja nie powiodla sie");
+        // exit(1);
+    }
+    return p;
+}
+
+void complete_int_array(int *t, int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        *(t + i) = rand() % 11;
+    }
+}
+
